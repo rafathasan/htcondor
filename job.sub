@@ -1,0 +1,40 @@
+# Executable
+executable = run.sh
+arguments = 
+
+# Define variable
+USER=rafat
+SIF = /ospool/ap21/data/$(USER)/semivl.sif
+DATA = /ospool/ap21/data/$(USER)/semivl.zip
+
+# Log files
+log = ./jobs/job_$(Cluster)_$(Process).log
+error = ./jobs/job_$(Cluster)_$(Process).err
+output = ./jobs/job_$(Cluster)_$(Process).out
+
+# File transfer settings
+transfer_input_files = ., osdf://$(DATA)
+transfer_output_files = exp/
+transfer_output_remaps = "output.txt = output_$(Cluster).txt"
+
+# Checkpoint settings
+when_to_transfer_output = ON_EXIT
+should_transfer_files = YES
+transfer_checkpoint_files = input_file.txt
+checkpoint_exit_code = 85
+
+# Resource requests
+request_cpus = 8
+request_memory = 32GB
+request_disk = 60GB
+request_gpus = 1
+
+# GPU attributes
+gpus_minimum_capability = 7.0
+gpus_maximum_capability = 8.0
+gpus_minimum_memory = 80000
+
++SingularityImage = "osdf://$(SIF)"
++JobDurationCategory = "Long"
+
+queue
